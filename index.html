@@ -15,328 +15,56 @@
 
     <style>
         :root {
-            --bg-base: #050505;
-            --glass-bg: rgba(20, 20, 25, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --primary: #7C3AED;
-            --primary-gradient: linear-gradient(135deg, #7C3AED 0%, #3B82F6 50%, #06B6D4 100%);
-            --text-main: #F8FAFC;
-            --text-muted: #94A3B8;
+            --bg-base: #050505; --glass-bg: rgba(20, 20, 25, 0.7); --glass-border: rgba(255, 255, 255, 0.1);
+            --primary: #7C3AED; --primary-gradient: linear-gradient(135deg, #7C3AED 0%, #3B82F6 50%, #06B6D4 100%);
+            --text-main: #F8FAFC; --text-muted: #94A3B8;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-
-        body {
-            background-color: var(--bg-base);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(124, 58, 237, 0.15), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%);
-            animation: pulseBg 10s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulseBg {
-            0% { background-size: 100% 100%; }
-            100% { background-size: 120% 120%; }
-        }
-
-        .navbar {
-            background: rgba(5, 5, 5, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 16px 5%;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            text-decoration: none;
-        }
-
-        .brand-icon {
-            width: 50px; height: 50px;
-            background: var(--primary-gradient);
-            border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-            color: #fff; font-size: 22px;
-            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.5);
-            animation: floatIcon 3s ease-in-out infinite;
-        }
-
-        @keyframes floatIcon {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-base); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        .navbar { background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); padding: 16px 5%; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .brand { display: flex; align-items: center; gap: 16px; text-decoration: none; }
+        .brand-icon { width: 50px; height: 50px; background: var(--primary-gradient); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; }
         .brand-text-wrapper { display: flex; flex-direction: column; }
+        .brand-title { font-size: 26px; font-weight: 800; color: #fff; }
+        .brand-subtitle { font-size: 13px; font-weight: 600; color: #3B82F6; }
+        .container { max-width: 1100px; width: 100%; margin: 0 auto; padding: 40px 20px 120px 20px; flex: 1; }
         
-        .brand-title {
-            font-size: 26px; font-weight: 800; color: #fff;
-            letter-spacing: 0.5px; line-height: 1.1;
-        }
-
-        .brand-subtitle {
-            font-size: 13px; font-weight: 600;
-            background: linear-gradient(90deg, #F59E0B, #EF4444, #EC4899, #8B5CF6, #3B82F6, #F59E0B);
-            background-size: 200% auto;
-            color: #fff; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: gradientShine 3s linear infinite;
-        }
-
-        @keyframes gradientShine { to { background-position: 200% center; } }
-
-        .container {
-            max-width: 1100px; width: 100%; margin: 0 auto;
-            padding: 40px 20px 120px 20px; flex: 1;
-        }
-
-        #welcomeSection { text-align: center; display: none; animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        #welcomeSection { text-align: center; display: none; }
+        .hero-title { font-size: 48px; font-weight: 900; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-title {
-            font-size: 48px; font-weight: 900; margin-bottom: 15px;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
-        }
-
-        .hero-desc { font-size: 18px; color: var(--text-muted); margin-bottom: 40px; max-width: 600px; margin-inline: auto; line-height: 1.6; }
-
-        .poster-container {
-            position: relative; max-width: 380px; margin: 0 auto 50px auto;
-            border-radius: 30px; padding: 10px; background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(124, 58, 237, 0.2);
-            transition: all 0.5s ease;
-        }
+        #playerSection { display: none; width: 100%; }
+        .video-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 30px; overflow: hidden; }
         
-        .poster-container:hover { transform: scale(1.05) translateY(-10px); box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9), 0 0 60px rgba(124, 58, 237, 0.4); }
-        .poster-image { width: 100%; height: auto; border-radius: 24px; display: block; }
-
-        .features-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 60px;
-        }
-
-        .feature-card {
-            background: var(--glass-bg); border: 1px solid var(--glass-border);
-            border-radius: 24px; padding: 30px; text-align: left;
-            backdrop-filter: blur(20px); transition: transform 0.4s ease, border-color 0.4s ease;
-            position: relative; overflow: hidden; cursor: pointer;
-        }
-
-        .feature-card::after {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-            opacity: 0; transition: opacity 0.4s; pointer-events: none;
-        }
-
-        .feature-card:hover { transform: translateY(-8px); border-color: rgba(255,255,255,0.3); }
-        .feature-card:hover::after { opacity: 1; }
-
-        .feature-icon {
-            width: 60px; height: 60px; border-radius: 18px;
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 24px; color: #3B82F6; margin-bottom: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover .feature-icon { transform: scale(1.1); background: rgba(59, 130, 246, 0.2); }
-
-        .feature-card h3 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 10px; }
-        .feature-card p { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
-
-        .dev-section {
-            background: linear-gradient(180deg, var(--glass-bg), rgba(0,0,0,0.8));
-            border: 1px solid var(--glass-border);
-            border-radius: 30px; padding: 40px; margin-top: 20px;
-            text-align: center; position: relative; overflow: hidden;
-        }
-
-        .dev-badge {
-            display: inline-block; padding: 6px 16px; background: rgba(124, 58, 237, 0.2);
-            color: #A78BFA; border-radius: 100px; font-size: 14px; font-weight: 700; margin-bottom: 20px;
-            border: 1px solid rgba(124, 58, 237, 0.4);
-        }
-
-        .dev-name { font-size: 32px; font-weight: 800; color: #fff; margin-bottom: 10px; }
-        .dev-role { font-size: 16px; color: #06B6D4; font-weight: 600; margin-bottom: 20px; letter-spacing: 1px; }
-        .dev-desc { font-size: 16px; color: var(--text-muted); max-width: 700px; margin: 0 auto; line-height: 1.7; }
-        
-        .tech-stack { display: flex; justify-content: center; gap: 15px; margin-top: 25px; flex-wrap: wrap; }
-        .tech-pill {
-            background: rgba(255,255,255,0.05); padding: 8px 20px; border-radius: 12px;
-            font-size: 14px; font-weight: 600; color: #E2E8F0; border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        #playerSection { display: none; width: 100%; animation: slideUp 0.6s ease; }
-        
-        .video-card {
-            background: var(--glass-bg); border: 1px solid var(--glass-border);
-            border-radius: 30px; overflow: hidden;
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(124, 58, 237, 0.2);
-            backdrop-filter: blur(30px);
-        }
-        
-        .video-wrapper { width: 100%; background: #000; aspect-ratio: 16/9; position: relative; }
+        /* Updated Media Wrapper to handle all file types dynamically */
+        .media-wrapper { width: 100%; background: #000; position: relative; min-height: 250px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .media-wrapper video, .media-wrapper iframe { width: 100%; height: 60vh; border: none; }
+        .media-wrapper audio { width: 100%; padding: 20px; }
+        .media-wrapper img { max-width: 100%; max-height: 70vh; object-fit: contain; }
 
         .video-details { padding: 24px; }
-        .video-title { 
-            font-size: 18px; 
-            font-weight: 700; 
-            margin-bottom: 12px; 
-            color: #fff; 
-            line-height: 1.4; 
-            word-wrap: break-word; 
-            display: -webkit-box; 
-            -webkit-line-clamp: 3; 
-            -webkit-box-orient: vertical; 
-            overflow: hidden; 
-        }
-        .video-meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; color: var(--text-muted); margin-bottom: 16px; font-weight: 500; }
-        .video-meta span { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.03); padding: 6px 12px; border-radius: 10px; }
+        .video-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: #fff; }
+        .action-buttons { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin-top: 20px; }
         
-        .action-buttons { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; }
-
-        .btn {
-            border: none; outline: none; padding: 12px 16px; border-radius: 14px;
-            font-size: 14px; font-weight: 700; cursor: pointer;
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none;
-        }
-        .btn-primary {
-            background: var(--primary-gradient); color: #fff;
-            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3); background-size: 200% auto;
-        }
-        .btn-primary:hover { background-position: right center; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(124, 58, 237, 0.5); }
-        
+        .btn { border: none; padding: 12px 16px; border-radius: 14px; font-size: 14px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+        .btn-primary { background: var(--primary-gradient); color: #fff; }
         .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--glass-border); }
-        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.3); transform: translateY(-3px); }
 
-        .floating-bot-btn {
-            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-            background: linear-gradient(135deg, #0088cc 0%, #00aaff 100%);
-            color: #fff; padding: 20px 40px; border-radius: 100px;
-            font-size: 18px; font-weight: 800; text-decoration: none;
-            display: flex; align-items: center; gap: 15px;
-            box-shadow: 0 20px 40px rgba(0, 136, 204, 0.5), inset 0 2px 4px rgba(255,255,255,0.4);
-            border: 2px solid rgba(255,255,255,0.2); z-index: 1000;
-            animation: giantPulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
-            white-space: nowrap; backdrop-filter: blur(10px);
-        }
-
-        .floating-bot-btn * { pointer-events: none; }
-        .floating-bot-btn i { font-size: 26px; animation: wigglex 2s infinite ease-in-out; }
-
-        @keyframes giantPulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 170, 255, 0.5); transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.05); }
-            70% { box-shadow: 0 0 0 20px rgba(0, 170, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 170, 255, 0); transform: translateX(-50%) scale(1); }
-        }
-
-        @keyframes wigglex {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-15deg); }
-            50% { transform: rotate(15deg); }
-            75% { transform: rotate(-5deg); }
-        }
-
-        .toast {
-            position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: rgba(15, 15, 20, 0.95); border: 1px solid rgba(124, 58, 237, 0.5);
-            padding: 16px 32px; border-radius: 100px; color: #fff; font-size: 15px; font-weight: 700;
-            display: flex; align-items: center; gap: 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1001; opacity: 0; pointer-events: none;
-        }
+        .toast { position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(15, 15, 20, 0.95); border: 1px solid rgba(124, 58, 237, 0.5); padding: 16px 32px; border-radius: 100px; color: #fff; font-size: 15px; z-index: 1001; opacity: 0; pointer-events: none; transition: 0.4s; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        .toast i { font-size: 20px; color: #06B6D4; }
-
-        .plyr { --plyr-color-main: var(--primary); font-family: 'Outfit', sans-serif !important; }
-        .plyr video { object-fit: contain; }
-
-        .loading-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s;
-        }
-        .loading-overlay.active { opacity: 1; pointer-events: all; }
-        .spinner {
-            width: 60px; height: 60px; border: 4px solid rgba(255, 255, 255, 0.1); border-top-color: var(--primary);
-            border-radius: 50%; animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite; margin-bottom: 20px;
-        }
-        .loading-text { color: #fff; font-size: 14px; font-weight: 800; letter-spacing: 3px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .glass-overlay-ui {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 3000; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
-        }
-        .glass-overlay-ui.active { opacity: 1; pointer-events: all; }
         
-        .glass-box-ui {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 35px; padding: 40px; text-align: center;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        .glass-overlay-ui { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(15px); display: flex; justify-content: center; align-items: center; z-index: 3000; opacity: 0; pointer-events: none; transition: 0.4s; }
+        .glass-overlay-ui.active { opacity: 1; pointer-events: all; }
+        .glass-box-ui { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 35px; padding: 40px; text-align: center; transform: scale(0.9); transition: 0.4s; }
         .glass-overlay-ui.active .glass-box-ui { transform: scale(1); }
-
+        
         .circular-timer { position: relative; width: 120px; height: 120px; margin: 0 auto 20px auto; }
         .circular-timer svg { transform: rotate(-90deg); width: 100%; height: 100%; }
         .circular-timer circle { fill: none; stroke-width: 6; stroke-linecap: round; }
         .circular-timer .bg { stroke: rgba(255,255,255,0.1); }
-        .circular-timer .progress { 
-            stroke: var(--primary); 
-            stroke-dasharray: 283; 
-            stroke-dashoffset: 0; 
-            transition: stroke-dashoffset 1s linear; 
-        }
-        .time-left {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 36px; font-weight: 800; color: #fff; text-shadow: 0 2px 10px rgba(124, 58, 237, 0.5);
-        }
+        .circular-timer .progress { stroke: var(--primary); stroke-dasharray: 283; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear; }
+        .time-left { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 36px; font-weight: 800; color: #fff; }
 
-        .ios-loader-spinner {
-            width: 50px; height: 50px;
-            border: 4px solid rgba(255,255,255,0.1);
-            border-top-color: #00aaff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px auto;
-        }
-
-        @media (max-width: 768px) {
-            .hero-title { font-size: 36px; }
-            .action-buttons { grid-template-columns: 1fr; }
-            .floating-bot-btn { width: 92%; justify-content: center; font-size: 16px; padding: 18px; }
-            .glass-box-ui { padding: 30px 20px; width: 90%; }
-        }
+        @media (max-width: 768px) { .action-buttons { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -352,77 +80,34 @@
     </header>
 
     <div class="container">
-        <!-- Grand Welcome Section -->
         <section id="welcomeSection">
             <h1 class="hero-title">Cloud Media Engine Pro</h1>
-            <p class="hero-desc">Experience lightning-fast video streaming powered by advanced cloud infrastructure. Secure, encrypted, and built for performance.</p>
-            
-            <div class="poster-container" onclick="triggerSmartLinkAd()">
-                <img src="https://i.postimg.cc/XqWfysjM/file-000000006ad8820ba2d59769f2cbc99c.png" alt="Bot Overview" class="poster-image">
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-card" onclick="triggerSmartLinkAd()">
-                    <a href="https://t.me/PoltPulse_File_Id_bot" target="_blank" style="text-decoration: none;">
-                        <div class="feature-icon"><i class="fab fa-telegram-plane"></i></div>
-                    </a>
-                    <h3>Smart Telegram Bot</h3>
-                    <p>Simply forward your media to our highly optimized cloud bot to generate a direct streaming link instantly without any limits.</p>
-                </div>
-                <div class="feature-card" onclick="triggerSmartLinkAd()">
-                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
-                    <h3>Ultra-Fast Streaming</h3>
-                    <p>Enjoy buffer-free playback with our globally distributed servers ensuring the highest quality delivery anywhere in the world.</p>
-                </div>
-                <div class="feature-card" onclick="triggerSmartLinkAd()">
-                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Secure & Private</h3>
-                    <p>Your files are processed with state-of-the-art encryption protocols ensuring complete privacy and security for your content.</p>
-                </div>
-            </div>
-
-            <div class="dev-section" onclick="triggerSmartLinkAd()">
-                <div class="dev-badge"><i class="fas fa-code"></i> Developer Profile</div>
-                <h2 class="dev-name">Himanshu RAJ Yadav</h2>
-                <div class="dev-role">Lead Developer & System Architect</div>
-                <p class="dev-desc">
-                    Passionate creator specializing in advanced Telegram Bots, dynamic Android applications, and robust web solutions. 
-                    Dedicated to building high-performance tools and stunning digital experiences that push the boundaries of modern technology.
-                </p>
-                <div class="tech-stack">
-                    <span class="tech-pill"><i class="fab fa-android"></i> Android Dev</span>
-                    <span class="tech-pill"><i class="fas fa-robot"></i> Bot Architecture</span>
-                    <span class="tech-pill"><i class="fas fa-layer-group"></i> UI/UX Design</span>
-                    <span class="tech-pill"><i class="fas fa-server"></i> Cloud Systems</span>
-                </div>
-            </div>
+            <p>Send any Video, Audio, Photo, or PDF to our Telegram Bot to generate a direct stream link.</p>
+            <br>
+            <a href="https://t.me/PoltPulse_File_Id_bot" target="_blank" class="btn btn-primary" style="padding: 15px 30px; font-size: 18px;">
+                <i class="fab fa-telegram-plane"></i> Launch Telegram Bot Now
+            </a>
         </section>
 
-        <!-- Compact Player Section -->
+        <!-- Dynamic Player Section -->
         <section id="playerSection">
             <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="player" controls playsinline autoplay muted>
-                        <source id="videoSource" src="" type="video/mp4">
-                    </video>
+                <!-- Media Wrapper where the player, image, or PDF will render -->
+                <div class="media-wrapper" id="mediaContainer">
+                    <!-- Javascript will inject correct element here based on MIME type -->
                 </div>
+                
                 <div class="video-details">
                     <h2 class="video-title" id="displayTitle">Hrry.Stream Secure Media</h2>
-                    <div class="video-meta">
-                        <span><i class="fas fa-check-circle" style="color:#10B981;"></i> Status: Online & Optimized</span>
-                        <span><i class="fas fa-lock" style="color:#F59E0B;"></i> FULLY SAFE 🔗</span>
-                        <span><i class="fas fa-server" style="color:#3B82F6;"></i> Cloud Routed</span>
-                    </div>
-
                     <div class="action-buttons">
                         <a id="dlBtn" href="#" class="btn btn-primary">
-                            <i class="fas fa-cloud-download-alt"></i> Download Media File
+                            <i class="fas fa-cloud-download-alt"></i> Download File
                         </a>
                         <button class="btn btn-secondary" onclick="copyLink()">
-                            <i class="fas fa-copy"></i> Copy Direct Link
+                            <i class="fas fa-copy"></i> Copy Link
                         </button>
                         <button class="btn btn-secondary" onclick="shareVideo()">
-                            <i class="fas fa-share-nodes"></i> Share File
+                            <i class="fas fa-share-nodes"></i> Share
                         </button>
                     </div>
                 </div>
@@ -430,18 +115,14 @@
         </section>
     </div>
 
-    <a href="https://t.me/PoltPulse_File_Id_bot" target="_blank" class="floating-bot-btn" id="floatingBtn">
-        <i class="fab fa-telegram-plane"></i> <span>Launch Telegram Bot Now</span>
-    </a>
-
     <div class="toast" id="toast">
-        <i class="fas fa-bell"></i>
-        <span id="toastMsg">System Notification</span>
+        <i class="fas fa-bell"></i> <span id="toastMsg">Notification</span>
     </div>
 
+    <!-- Download Overlay System -->
     <div id="downloadOverlay" class="glass-overlay-ui" style="display: none;">
         <div class="glass-box-ui">
-            <h3 style="color: #fff; margin-bottom: 25px; font-size: 22px;">Generating Download Link...</h3>
+            <h3 style="color: #fff; margin-bottom: 25px;">Generating Link...</h3>
             <div class="circular-timer">
                 <svg viewBox="0 0 100 100">
                     <circle class="bg" cx="50" cy="50" r="45"></circle>
@@ -449,117 +130,70 @@
                 </svg>
                 <div class="time-left" id="timerText">15</div>
             </div>
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Please do not close this window</p>
             <a id="finalDownloadBtn" href="#" class="btn btn-primary" style="display: none; width: 100%;" download>
                 <i class="fas fa-download"></i> Get File Now
             </a>
         </div>
     </div>
 
-    <div id="tgLoaderOverlay" class="glass-overlay-ui" style="display: none;">
-        <div class="glass-box-ui">
-            <div class="ios-loader-spinner"></div>
-            <h3 style="color: #fff; font-size: 20px;">Connecting to Telegram...</h3>
-            <p style="color: var(--text-muted); font-size: 14px; margin-top: 10px;">@PoltPulse_File_Id_bot</p>
-        </div>
-    </div>
-
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script>
-        let plyrPlayer = null;
         let finalDownloadUrl = '';
-        
-        // Smart Link URL Integration
         const smartLinkUrl = "https://www.effectivecpmnetwork.com/w82na4w6sw?key=ac9c026166ef35c5fbf295ca0c7b9baa";
 
-        function triggerSmartLinkAd() {
-            window.open(smartLinkUrl, '_blank');
-        }
+        function triggerSmartLinkAd() { window.open(smartLinkUrl, '_blank'); }
 
         document.addEventListener('DOMContentLoaded', () => {
-            plyrPlayer = new Plyr('#player', {
-                controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'fullscreen'],
-                tooltips: { controls: true, seeking: true },
-                autoplay: true,
-                muted: true 
-            });
-
-            plyrPlayer.on('ready', () => {
-                const loaderHTML = `
-                    <div class="loading-overlay" id="customLoader">
-                        <div class="spinner"></div>
-                        <div class="loading-text">hrry.streaming...</div>
-                    </div>
-                `;
-                plyrPlayer.elements.container.insertAdjacentHTML('beforeend', loaderHTML);
-                
-                const customLoader = document.getElementById('customLoader');
-                const showLoader = () => customLoader.classList.add('active');
-                const hideLoader = () => customLoader.classList.remove('active');
-
-                plyrPlayer.on('play', () => {
-                    if (plyrPlayer.media.readyState < 3) showLoader();
-                });
-                plyrPlayer.on('waiting', showLoader);
-                plyrPlayer.on('seeking', showLoader);
-                plyrPlayer.on('playing', hideLoader);
-                plyrPlayer.on('canplay', hideLoader);
-                plyrPlayer.on('pause', hideLoader);
-                plyrPlayer.on('error', () => {
-                    hideLoader();
-                    showToast("System Error: Media source unreadable");
-                });
-            });
-
             const urlParams = new URLSearchParams(window.location.search);
-            const videoUrl = urlParams.get('url');
-            const videoTitle = urlParams.get('title') || 'Hrry.Stream Cloud Media';
+            const mediaUrl = urlParams.get('url');
+            const mediaTitle = urlParams.get('title') || 'Hrry.Stream Cloud Media';
+            // Getting MIME type passed from Telegram bot, default to video
+            const mimeType = urlParams.get('mime') || 'video/mp4'; 
 
-            if (videoUrl && videoUrl.trim() !== '') {
+            if (mediaUrl && mediaUrl.trim() !== '') {
                 document.getElementById('welcomeSection').style.display = 'none';
                 document.getElementById('playerSection').style.display = 'block';
-                document.getElementById('floatingBtn').style.display = 'none'; 
-                document.getElementById('displayTitle').innerText = decodeURIComponent(videoTitle);
+                document.getElementById('displayTitle').innerText = decodeURIComponent(mediaTitle);
                 
-                document.getElementById('videoSource').src = videoUrl;
-                finalDownloadUrl = videoUrl; 
+                finalDownloadUrl = mediaUrl; 
+                const mediaContainer = document.getElementById('mediaContainer');
 
-                plyrPlayer.source = {
-                    type: 'video',
-                    sources: [{ src: videoUrl }]
-                };
-                
-                setTimeout(() => {
-                    plyrPlayer.play().catch(e => {
-                        console.log("Auto-play blocked, waiting for interaction");
-                    });
-                }, 500);
-
+                // Dynamic Rendering based on File Type
+                if (mimeType.startsWith('video/')) {
+                    mediaContainer.innerHTML = `
+                        <video id="player" controls playsinline autoplay>
+                            <source src="${mediaUrl}" type="${mimeType}">
+                        </video>`;
+                    const player = new Plyr('#player', { autoplay: true, muted: true });
+                } 
+                else if (mimeType.startsWith('audio/')) {
+                    mediaContainer.innerHTML = `
+                        <audio id="player" controls>
+                            <source src="${mediaUrl}" type="${mimeType}">
+                        </audio>`;
+                    const player = new Plyr('#player');
+                } 
+                else if (mimeType.startsWith('image/')) {
+                    mediaContainer.innerHTML = `<img src="${mediaUrl}" alt="${mediaTitle}">`;
+                } 
+                else if (mimeType === 'application/pdf') {
+                    mediaContainer.innerHTML = `<iframe src="${mediaUrl}"></iframe>`;
+                } 
+                else {
+                    // Fallback for other files (APK, ZIP, etc)
+                    mediaContainer.innerHTML = `
+                        <div style="text-align: center; padding: 40px;">
+                            <i class="fas fa-file-alt" style="font-size: 80px; color: var(--primary); margin-bottom: 20px;"></i>
+                            <h3 style="color: #fff;">File Ready</h3>
+                            <p style="color: var(--text-muted); margin-top: 10px;">Format: ${mimeType}<br>This format cannot be previewed. Please download.</p>
+                        </div>`;
+                }
             } else {
                 document.getElementById('welcomeSection').style.display = 'block';
-                document.getElementById('playerSection').style.display = 'none';
             }
         });
 
-        const floatingBtn = document.getElementById('floatingBtn');
-        const tgLoaderOverlay = document.getElementById('tgLoaderOverlay');
-
-        floatingBtn.addEventListener('click', (e) => {
-            e.preventDefault(); 
-            const botLink = floatingBtn.href;
-
-            tgLoaderOverlay.style.display = 'flex';
-            setTimeout(() => tgLoaderOverlay.classList.add('active'), 10);
-
-            setTimeout(() => {
-                window.location.href = botLink;
-                setTimeout(() => {
-                    tgLoaderOverlay.classList.remove('active');
-                    setTimeout(() => tgLoaderOverlay.style.display = 'none', 400);
-                }, 2000);
-            }, 1500);
-        });
-
+        // Download Timer Logic
         const dlBtn = document.getElementById('dlBtn');
         const downloadOverlay = document.getElementById('downloadOverlay');
         const timerProgress = document.getElementById('timerProgress');
@@ -568,31 +202,23 @@
 
         dlBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            if (!finalDownloadUrl) {
-                showToast("Download Link Not Found!");
-                return;
-            }
-
+            if (!finalDownloadUrl) return showToast("Link Not Found!");
             triggerSmartLinkAd();
-
+            
             downloadOverlay.style.display = 'flex';
             setTimeout(() => downloadOverlay.classList.add('active'), 10);
-
+            
             let timeLeft = 15;
             timerText.innerText = timeLeft;
             finalDownloadBtn.style.display = 'none';
-            timerProgress.style.strokeDashoffset = '0'; 
-
+            
             const countdown = setInterval(() => {
                 timeLeft--;
                 timerText.innerText = timeLeft;
-                
-                const offset = 283 - (timeLeft / 15) * 283;
-                timerProgress.style.strokeDashoffset = offset;
+                timerProgress.style.strokeDashoffset = 283 - (timeLeft / 15) * 283;
 
                 if (timeLeft <= 0) {
                     clearInterval(countdown);
-                    timerText.innerText = "0";
                     finalDownloadBtn.href = finalDownloadUrl;
                     finalDownloadBtn.style.display = 'inline-flex';
                 }
@@ -608,21 +234,13 @@
         function copyLink() {
             triggerSmartLinkAd();
             navigator.clipboard.writeText(window.location.href);
-            showToast("Secure Direct Link Copied!");
+            showToast("Secure Link Copied!");
         }
-
         function shareVideo() {
             triggerSmartLinkAd();
-            if (navigator.share) {
-                navigator.share({ 
-                    title: document.getElementById('displayTitle').innerText, 
-                    url: window.location.href 
-                }).catch(() => {});
-            } else { 
-                copyLink(); 
-            }
+            if (navigator.share) { navigator.share({ title: document.title, url: window.location.href }); } 
+            else { copyLink(); }
         }
-
         function showToast(msg) {
             const toast = document.getElementById('toast');
             document.getElementById('toastMsg').innerText = msg;
