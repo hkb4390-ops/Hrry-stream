@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
 
     <style>
         :root {
@@ -905,9 +906,14 @@
             width: 100%;
         }
 
-        .plyr video {
-            object-fit: contain;
-        }
+        .plyr video { object-fit: contain; width: 100%; height: 100%; background: #000; }
+        .video-wrapper.portrait-video { aspect-ratio: 9 / 16; max-height: 88vh; }
+        .video-wrapper.landscape-video { aspect-ratio: 16 / 9; }
+        .plyr--fullscreen-fallback, .plyr:fullscreen { background: #000 !important; }
+        .plyr--fullscreen-fallback video, .plyr:fullscreen video { object-fit: contain !important; background: #000 !important; }
+        .plyr__controls { padding: 12px 14px !important; }
+        .plyr__control { min-width: 38px; min-height: 38px; }
+        @media (max-width: 768px) { .video-wrapper.portrait-video { max-height: 82vh; } .plyr__controls { padding: 10px 8px !important; } .plyr__control { min-width: 40px; min-height: 40px; } }
 
         .loading-overlay {
             position: absolute;
@@ -1639,24 +1645,22 @@ document.addEventListener(
             // VIDEO
             // ==========================================
 
-            if (fileType === 'video') {
+            if (fileType === 'video' || isVideoUrl(fileUrl)) {
 
                 container.innerHTML = `
                     <video
                         id="player"
                         controls
                         playsinline
+                        webkit-playsinline
                         autoplay
                         muted
-                    >
-                        <source
-                            src="${escapeHTMLAttribute(fileUrl)}"
-                            type="video/mp4"
-                        >
-                    </video>
+                        preload="metadata"
+                        crossorigin="anonymous"
+                    ></video>
                 `;
 
-                initPlyr(true);
+                initVideoPlayer(fileUrl, true);
 
             }
 
@@ -2007,174 +2011,107 @@ function renderHTMLPreview(
 // PLYR VIDEO / AUDIO
 // ==========================================
 
-function initPlyr(isMuted) {
-
-    plyrPlayer =
-        new Plyr(
-            '#player',
-            {
-
-                controls: [
-                    'play-large',
-                    'play',
-                    'progress',
-                    'current-time',
-                    'duration',
-                    'mute',
-                    'volume',
-                    'fullscreen'
-                ],
-
-                tooltips: {
-                    controls: true,
-                    seeking: true
-                },
-
-                autoplay: true,
-
-                muted: isMuted
-
-            }
-        );
-
-
-    plyrPlayer.on(
-        'ready',
-        () => {
-
-            const loaderHTML = `
-
-                <div
-                    class="loading-overlay"
-                    id="customLoader"
-                >
-
-                    <div
-                        class="spinner"
-                    ></div>
-
-                    <div
-                        class="loading-text"
-                    >
-                        hrry.streaming...
-                    </div>
-
-                </div>
-
-            `;
-
-
-            plyrPlayer.elements.container
-                .insertAdjacentHTML(
-                    'beforeend',
-                    loaderHTML
-                );
-
-
-            const customLoader =
-                document.getElementById(
-                    'customLoader'
-                );
-
-
-            const showLoader =
-                () => {
-                    customLoader.classList.add(
-                        'active'
-                    );
-                };
-
-
-            const hideLoader =
-                () => {
-                    customLoader.classList.remove(
-                        'active'
-                    );
-                };
-
-
-            plyrPlayer.on(
-                'play',
-                () => {
-
-                    if (
-                        plyrPlayer.media.readyState < 3
-                    ) {
-
-                        showLoader();
-
-                    }
-
-                }
-            );
-
-
-            plyrPlayer.on(
-                'waiting',
-                showLoader
-            );
-
-
-            plyrPlayer.on(
-                'seeking',
-                showLoader
-            );
-
-
-            plyrPlayer.on(
-                'playing',
-                hideLoader
-            );
-
-
-            plyrPlayer.on(
-                'canplay',
-                hideLoader
-            );
-
-
-            plyrPlayer.on(
-                'pause',
-                hideLoader
-            );
-
-
-            plyrPlayer.on(
-                'error',
-                () => {
-
-                    hideLoader();
-
-                    showToast(
-                        "System Error: Media source unreadable"
-                    );
-
-                }
-            );
-
-
-            setTimeout(
-                () => {
-
-                    plyrPlayer
-                        .play()
-                        .catch(
-                            () => {
-                                console.log(
-                                    "Auto-play blocked, waiting for interaction"
-                                );
-                            }
-                        );
-
-                },
-                500
-            );
-
-        }
-    );
-
+function isHlsUrl(url) {
+    try { const u=new URL(url,window.location.href); return /\.m3u8$/i.test(u.pathname) || /[?&](format|type)=m3u8/i.test(u.search); }
+    catch(e) { return /\.m3u8(?:$|[?#])/i.test(url); }
 }
 
+function isVideoUrl(url) {
+    try { const u=new URL(url,window.location.href); return /\.(mp4|m4v|webm|mov|ogv|ogg|avi|mkv|3gp|mpeg|mpg)(?:$|[?#])/i.test(u.pathname); }
+    catch(e) { return /\.(mp4|m4v|webm|mov|ogv|ogg|avi|mkv|3gp|mpeg|mpg)(?:$|[?#])/i.test(url); }
+}
+
+function getVideoMimeType(url) {
+    try {
+        const path=new URL(url,window.location.href).pathname.toLowerCase();
+        if(path.endsWith('.webm')) return 'video/webm';
+        if(path.endsWith('.ogv')||path.endsWith('.ogg')) return 'video/ogg';
+        if(path.endsWith('.mov')) return 'video/quicktime';
+        if(path.endsWith('.m4v')) return 'video/x-m4v';
+        if(path.endsWith('.3gp')) return 'video/3gpp';
+        if(path.endsWith('.mkv')) return 'video/x-matroska';
+        if(path.endsWith('.avi')) return 'video/x-msvideo';
+        if(path.endsWith('.mpeg')||path.endsWith('.mpg')) return 'video/mpeg';
+    } catch(e) {}
+    return 'video/mp4';
+}
+
+function initVideoPlayer(sourceUrl,isMuted) {
+    const video=document.getElementById('player');
+    if(!video) return;
+    let hlsInstance=null;
+
+    if(isHlsUrl(sourceUrl)) {
+        if(video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src=sourceUrl;
+        } else if(window.Hls && Hls.isSupported()) {
+            hlsInstance=new Hls({enableWorker:true,lowLatencyMode:true,backBufferLength:90,capLevelToPlayerSize:true});
+            hlsInstance.loadSource(sourceUrl);
+            hlsInstance.attachMedia(video);
+            hlsInstance.on(Hls.Events.ERROR,function(event,data){
+                if(data && data.fatal) {
+                    if(data.type===Hls.ErrorTypes.NETWORK_ERROR){ showToast('HLS network error — retrying...'); hlsInstance.startLoad(); }
+                    else if(data.type===Hls.ErrorTypes.MEDIA_ERROR){ showToast('HLS media error — recovering...'); hlsInstance.recoverMediaError(); }
+                    else showToast('System Error: HLS stream unreadable');
+                }
+            });
+        } else { showToast('This browser does not support HLS playback'); return; }
+    } else {
+        video.src=sourceUrl;
+        video.type=getVideoMimeType(sourceUrl);
+    }
+
+    video.muted=!!isMuted;
+    plyrPlayer=new Plyr(video,{
+        controls:['play-large','play','progress','current-time','duration','mute','volume','settings','fullscreen'],
+        settings:['quality','speed'],
+        tooltips:{controls:true,seeking:true},
+        autoplay:true, muted:!!isMuted,
+        fullscreen:{enabled:true,fallback:true,iosNative:true},
+        keyboard:{focused:true,global:true}, ratio:'16:9'
+    });
+
+    plyrPlayer.on('ready',function(){
+        const old=document.getElementById('customLoader'); if(old) old.remove();
+        plyrPlayer.elements.container.insertAdjacentHTML('beforeend',`<div class="loading-overlay" id="customLoader"><div class="spinner"></div><div class="loading-text">HRRY.STREAMING...</div></div>`);
+        const loader=document.getElementById('customLoader');
+        const show=()=>loader&&loader.classList.add('active');
+        const hide=()=>loader&&loader.classList.remove('active');
+        plyrPlayer.on('play',()=>{if(video.readyState<3)show();});
+        plyrPlayer.on('waiting',show); plyrPlayer.on('seeking',show); plyrPlayer.on('playing',hide); plyrPlayer.on('canplay',hide); plyrPlayer.on('pause',hide);
+        plyrPlayer.on('error',()=>{hide();showToast('System Error: Media source unreadable');});
+        video.addEventListener('loadedmetadata',()=>updateVideoOrientation(video));
+        setTimeout(()=>plyrPlayer.play().catch(()=>console.log('Autoplay blocked, waiting for interaction')),500);
+    });
+
+    plyrPlayer.on('enterfullscreen',()=>{updateVideoOrientation(video);requestBestOrientation(video);});
+    plyrPlayer.on('exitfullscreen',unlockOrientation);
+    document.addEventListener('fullscreenchange',()=>{
+        if(document.fullscreenElement||document.webkitFullscreenElement) requestBestOrientation(video); else unlockOrientation();
+    });
+    window.addEventListener('orientationchange',()=>{if(plyrPlayer&&plyrPlayer.fullscreen.active)updateVideoOrientation(video);});
+    window.addEventListener('beforeunload',()=>{if(hlsInstance)try{hlsInstance.destroy();}catch(e){}});
+}
+
+function updateVideoOrientation(video) {
+    if(!video||!video.videoWidth||!video.videoHeight)return;
+    const portrait=video.videoHeight>video.videoWidth;
+    const wrapper=document.getElementById('mediaContainer');
+    if(wrapper){wrapper.classList.toggle('portrait-video',portrait);wrapper.classList.toggle('landscape-video',!portrait);}
+    video.style.objectFit='contain';
+}
+
+async function requestBestOrientation(video) {
+    if(!video||!video.videoWidth||!video.videoHeight)return;
+    if(screen.orientation&&typeof screen.orientation.lock==='function'){
+        try { await screen.orientation.lock(video.videoHeight>video.videoWidth?'portrait':'landscape'); }
+        catch(e) { console.log('Orientation lock unavailable:',e); }
+    }
+}
+
+function unlockOrientation() {
+    if(screen.orientation&&typeof screen.orientation.unlock==='function')try{screen.orientation.unlock();}catch(e){}
+}
 
 // ==========================================
 // TELEGRAM BUTTON
